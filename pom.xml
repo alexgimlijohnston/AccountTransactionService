@@ -8,11 +8,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>account-transaction-service-dao</module>
-        <module>account-transaction-service-businesslogic</module>
-        <module>account-transaction-service-domain</module>
-        <module>account-transaction-service-dto</module>
-        <module>account-transaction-service-services</module>
+        <module>dao</module>
+        <module>businesslogic</module>
+        <module>domain</module>
+        <module>dto</module>
+        <module>services</module>
     </modules>
 
     <properties>
