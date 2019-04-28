@@ -1,14 +1,11 @@
-package com.service.dto;
+package com.service.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public class AccountDTO {
+public class Account {
 
     private Integer accountId;
 
     private String accountHolderName;
 
-    @JsonProperty
     public Integer getAccountId() {
         return accountId;
     }
@@ -17,7 +14,6 @@ public class AccountDTO {
         this.accountId = accountId;
     }
 
-    @JsonProperty
     public String getAccountHolderName() {
         return accountHolderName;
     }
