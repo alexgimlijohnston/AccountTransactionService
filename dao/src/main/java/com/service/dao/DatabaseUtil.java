@@ -1,6 +1,7 @@
 package com.service.dao;
 
 import com.service.domain.Account;
+import com.service.domain.Customer;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -36,6 +37,7 @@ public class DatabaseUtil {
 
             configuration.setProperties(settings);
             configuration.addAnnotatedClass(Account.class);
+            configuration.addAnnotatedClass(Customer.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
