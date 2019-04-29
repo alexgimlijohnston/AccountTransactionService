@@ -1,44 +1,39 @@
 package com.service.dao;
 
 import org.h2.tools.DeleteDbFiles;
+import java.io.*;
 import java.sql.*;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DbConfig {
 
-    public static final String DB_DRIVER = "org.h2.Driver";
-    public static final String DB_CONNECTION = "jdbc:h2:~/test";
-    public static final String DB_USER = "";
-    public static final String DB_PASSWORD = "";
+    private static final String DB_DRIVER = "org.h2.Driver";
+    private static final String DB_CONNECTION = "jdbc:h2:~/test";
+    private static final String DB_USER = "";
+    private static final String DB_PASSWORD = "";
+    private static final String DB_TABLES = "db-tables";
+    private static final String DB_DATA = "db-data";
 
     private static Connection connection = null;
 
-    private static Statement stmt = null;
-
-    public Statement getStmt() {
-        return stmt;
-    }
-
-
     public static Connection getInMemoryDatabase() {
         if(connection == null) {
-            //delete the H2 database named 'test' in the user home directory
             DeleteDbFiles.execute("~", "test", true);
-            createTables();
+            setUpDatabase();
             return connection;
         } else {
             return connection;
         }
     }
 
-    private static void createTables() {
+    private static void setUpDatabase() {
         connection = getDBConnection();
-        stmt = null;
         try {
-            connection.setAutoCommit(false);
-            stmt = connection.createStatement();
-            stmt.execute("CREATE TABLE ACCOUNT(id int primary key, name varchar(255))");
-            stmt.execute("INSERT INTO ACCOUNT(id, name) VALUES(100, 'Alex')");
-            stmt.execute("INSERT INTO ACCOUNT(id, name) VALUES(200, 'Victoria')");
+            Objects.requireNonNull(connection).setAutoCommit(false);
+            Statement stmt = connection.createStatement();
+            executeQueries(stmt, DB_TABLES);
+            executeQueries(stmt, DB_DATA);
         } catch (SQLException e) {
             System.out.println("Exception Message " + e.getLocalizedMessage());
         } catch (Exception e) {
@@ -46,21 +41,37 @@ public class DbConfig {
         }
     }
 
+    private static void executeQueries(Statement stmt, String path) throws IOException, SQLException {
+        InputStream in = DbConfig.class.getClassLoader().getResourceAsStream(path);
+        BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(in)));
+        String fileName;
+        while ((fileName = br.readLine()) != null) {
+            String[] queries = readSql(path + "/" + fileName);
+            for (String query : queries) {
+                stmt.execute(query);
+            }
+        }
+    }
+
+    private static String[] readSql(String resourceName) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DbConfig.class.getClassLoader().getResourceAsStream(resourceName))));
+        String s = reader.lines().collect(Collectors.joining());
+        reader.close();
+        return s.split(";");
+    }
+
     private static Connection getDBConnection() {
-        Connection dbConnection = null;
         try {
             Class.forName(DB_DRIVER);
         } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
         try {
-            dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER,
-                    DB_PASSWORD);
-            return dbConnection;
+            return DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return dbConnection;
+        return null;
     }
 
 

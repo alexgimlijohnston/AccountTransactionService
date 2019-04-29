@@ -2,9 +2,11 @@ package com.service.businesslogic.account;
 
 import com.service.dto.AccountDTO;
 
+import java.util.Optional;
+
 public interface AccountService {
 
-    AccountDTO getAccountById(Integer id);
+    Optional<AccountDTO> getAccountById(Integer id);
 
 
 }

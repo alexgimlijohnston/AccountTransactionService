@@ -1,10 +1,11 @@
 package com.service.dao.account;
 
 import com.service.domain.Account;
+import java.util.Optional;
 
 public interface AccountDAO {
 
-   Account getAccountById(Integer id);
+   Optional<Account> getAccountById(Integer id);
 
 
 }

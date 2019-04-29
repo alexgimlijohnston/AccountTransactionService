@@ -4,7 +4,7 @@ public class Account {
 
     private Integer accountId;
 
-    private String accountHolderName;
+    private Double balance;
 
     public Integer getAccountId() {
         return accountId;
@@ -14,11 +14,12 @@ public class Account {
         this.accountId = accountId;
     }
 
-    public String getAccountHolderName() {
-        return accountHolderName;
+    public Double getBalance() {
+        return balance;
     }
 
-    public void setAccountHolderName(String accountHolderName) {
-        this.accountHolderName = accountHolderName;
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
+
 }

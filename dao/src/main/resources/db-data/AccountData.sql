@@ -1,0 +1,2 @@
+INSERT INTO ACCOUNT(accountId, balance) VALUES(100, 28902.67);
+INSERT INTO ACCOUNT(accountId, balance) VALUES(200, 46224.99);
