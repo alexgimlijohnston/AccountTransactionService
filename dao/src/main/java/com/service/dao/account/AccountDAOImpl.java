@@ -1,46 +1,31 @@
 package com.service.dao.account;
 
+import com.service.dao.DatabaseUtil;
 import com.service.domain.Account;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Optional;
-
-import static com.service.dao.DbConfig.getInMemoryDatabase;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class AccountDAOImpl implements AccountDAO {
 
-    private static final String SELECT_FROM_ACCOUNT_WHERE_ID = "SELECT * FROM Account WHERE accountId = ";
-
-
     public Optional<Account> getAccountById(Integer id) {
-        try {
-            Connection connection = getInMemoryDatabase();
-            String sql = SELECT_FROM_ACCOUNT_WHERE_ID + id;
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            return getAccount(rs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
-    }
+        Account acc = new Account(id, 2324.22);
+        Transaction transaction = null;
+        try (Session session = DatabaseUtil.getSessionFactory().openSession()) {
 
-    private Optional<Account> getAccount(ResultSet rs){
-        try {
-            if(rs.next()) {
-                Account account = new Account();
-                account.setAccountId(rs.getInt("accountId"));
-                account.setBalance(rs.getDouble("balance"));
-                return Optional.of(account);
+            transaction = session.beginTransaction();
+            session.save(acc);
+            transaction.commit();
+            return Optional.ofNullable(session.createQuery("from Account where accountId = " + id, Account.class).list().get(0));
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-        } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return Optional.empty();
     }
-
 
 }
