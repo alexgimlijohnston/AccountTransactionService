@@ -62,4 +62,28 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.10.19</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.14.3</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jcommander</artifactId>
+          <groupId>com.beust</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>bsh</artifactId>
+          <groupId>org.apache-extras.beanshell</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
 </project>

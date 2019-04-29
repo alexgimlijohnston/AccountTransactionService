@@ -3,6 +3,7 @@ package com.service.services.resources;
 import com.service.businesslogic.account.AccountService;
 import com.service.businesslogic.account.AccountServiceImpl;
 import com.service.dto.AccountDTO;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Optional;
@@ -26,4 +27,13 @@ public class AccountResource {
         }
         throw new NotFoundException("No Account Exists");
     }
+
+    @POST
+    @Consumes("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path(value = "/create")
+    public void createAccount(@NotNull AccountDTO accountDTO) {
+        accountService.createAccount(accountDTO);
+    }
+
 }

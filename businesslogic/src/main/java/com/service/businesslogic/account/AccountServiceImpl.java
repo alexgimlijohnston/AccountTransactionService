@@ -10,20 +10,23 @@ public class AccountServiceImpl implements AccountService {
 
     private AccountDAO accountDAO;
 
+    private AccountMapper accountMapper;
+
     public AccountServiceImpl() {
         this.accountDAO = new AccountDAOImpl();
+        this.accountMapper = new AccountMapper();
     }
 
     public Optional<AccountDTO> getAccountById(Integer id) {
         Optional<Account> account = accountDAO.getAccountById(id);
-        return account.map(this::mapAccountToAccountDTO);
+        return account.map(account1 -> accountMapper.mapAccountToAccountDTO(account1));
     }
 
-    private AccountDTO mapAccountToAccountDTO(Account account) {
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setAccountId(account.getAccountId());
-        accountDTO.setBalance(account.getBalance());
-        return accountDTO;
+    public void createAccount(AccountDTO accountDTO) {
+        Account account = accountMapper.mapAccountDTOToAccount(accountDTO);
+        accountDAO.createAccount(account);
     }
+
+
 
 }
