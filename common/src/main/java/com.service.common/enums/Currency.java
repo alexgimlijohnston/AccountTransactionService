@@ -1,4 +1,4 @@
-package com.service.dto;
+package com.service.common.enums;
 
 public enum Currency {
 

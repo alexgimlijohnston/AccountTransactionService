@@ -1,8 +1,11 @@
 package com.service.dao;
 
 import com.service.domain.Account;
+import com.service.domain.AccountCustomerMapping;
 import com.service.domain.Customer;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -38,11 +41,46 @@ public class DatabaseUtil {
             configuration.setProperties(settings);
             configuration.addAnnotatedClass(Account.class);
             configuration.addAnnotatedClass(Customer.class);
+            configuration.addAnnotatedClass(AccountCustomerMapping.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
         return sessionFactory;
     }
+
+    public static Session getNewSession() {
+        return DatabaseUtil.getSessionFactory().openSession();
+    }
+
+    public static <T> void withTransaction(T objectToBeSaved) {
+        Transaction transaction = null;
+        try {
+            Session session = DatabaseUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.save(objectToBeSaved);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+    }
+
+    public static <T> void insertWithTransaction(T objectToBeSaved) {
+        Transaction transaction = null;
+        try {
+            Session session = DatabaseUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.save(objectToBeSaved);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+    }
+
+
 
 }

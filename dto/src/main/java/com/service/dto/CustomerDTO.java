@@ -1,7 +1,8 @@
 package com.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.sql.Timestamp;
+import org.joda.time.DateTime;
 import java.util.Objects;
 
 public class CustomerDTO {
@@ -16,13 +17,13 @@ public class CustomerDTO {
 
     private String number;
 
-    private Timestamp lastModifiedTime;
+    private DateTime lastModifiedTime;
 
     public CustomerDTO(){
 
     }
 
-    public CustomerDTO(Integer customerId, String firstName, String lastName, String address, String number, Timestamp lastModifiedTime) {
+    public CustomerDTO(Integer customerId, String firstName, String lastName, String address, String number, DateTime lastModifiedTime) {
         this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -77,11 +78,12 @@ public class CustomerDTO {
     }
 
     @JsonProperty
-    public Timestamp getLastModifiedTime() {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    public DateTime getLastModifiedTime() {
         return lastModifiedTime;
     }
 
-    public void setLastModifiedTime(Timestamp lastModifiedTime) {
+    public void setLastModifiedTime(DateTime lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
     }
 

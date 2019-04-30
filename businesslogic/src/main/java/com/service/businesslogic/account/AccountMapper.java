@@ -2,7 +2,10 @@ package com.service.businesslogic.account;
 
 import com.service.domain.Account;
 import com.service.dto.AccountDTO;
-import com.service.dto.Currency;
+import com.service.common.enums.Currency;
+import org.joda.time.DateTime;
+
+import java.sql.Timestamp;
 
 class AccountMapper {
 
@@ -12,7 +15,7 @@ class AccountMapper {
         accountDTO.setSortCode(account.getSortCode());
         accountDTO.setBalance(account.getBalance());
         accountDTO.setOverdraftAmount(account.getOverdraftAmount());
-        accountDTO.setLastModifiedTime(account.getLastModifiedTime());
+        accountDTO.setLastModifiedTime(new DateTime(account.getLastModifiedTime()));
         accountDTO.setCurrency(Currency.valueOf(account.getCurrency()));
         return accountDTO;
     }
@@ -23,7 +26,7 @@ class AccountMapper {
         account.setSortCode(accountDTO.getSortCode());
         account.setBalance(accountDTO.getBalance());
         account.setOverdraftAmount(accountDTO.getOverdraftAmount());
-        account.setLastModifiedTime(accountDTO.getLastModifiedTime());
+        account.setLastModifiedTime(new Timestamp(accountDTO.getLastModifiedTime().getMillis()));
         account.setCurrency(accountDTO.getCurrency().getName());
         return account;
     }

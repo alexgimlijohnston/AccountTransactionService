@@ -13,6 +13,7 @@
         <module>domain</module>
         <module>dto</module>
         <module>services</module>
+        <module>common</module>
     </modules>
 
     <properties>

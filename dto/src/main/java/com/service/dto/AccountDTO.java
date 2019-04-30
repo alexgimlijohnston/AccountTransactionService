@@ -1,7 +1,9 @@
 package com.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.sql.Timestamp;
+import com.service.common.enums.Currency;
+import org.joda.time.DateTime;
 import java.util.Objects;
 
 public class AccountDTO {
@@ -16,9 +18,9 @@ public class AccountDTO {
 
     private Double overdraftAmount;
 
-    private Timestamp lastModifiedTime;
+    private DateTime lastModifiedTime;
 
-    public AccountDTO(Integer accountId, String sortCode, Double balance, Double overdraftAmount, Timestamp lastModifiedTime, Currency currency) {
+    public AccountDTO(Integer accountId, String sortCode, Double balance, Double overdraftAmount, DateTime lastModifiedTime, Currency currency) {
         this.accountId = accountId;
         this.sortCode = sortCode;
         this.balance = balance;
@@ -76,11 +78,12 @@ public class AccountDTO {
     }
 
     @JsonProperty
-    public Timestamp getLastModifiedTime() {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    public DateTime getLastModifiedTime() {
         return lastModifiedTime;
     }
 
-    public void setLastModifiedTime(Timestamp lastModifiedTime) {
+    public void setLastModifiedTime(DateTime lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
     }
 

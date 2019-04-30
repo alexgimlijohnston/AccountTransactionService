@@ -2,6 +2,9 @@ package com.service.businesslogic.customer;
 
 import com.service.domain.Customer;
 import com.service.dto.CustomerDTO;
+import org.joda.time.DateTime;
+
+import java.sql.Timestamp;
 
 public class CustomerMapper {
 
@@ -11,7 +14,7 @@ public class CustomerMapper {
         customerDTO.setFirstName(customer.getFirstName());
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAddress(customer.getAddress());
-        customerDTO.setLastModifiedTime(customer.getLastModifiedTime());
+        customerDTO.setLastModifiedTime(new DateTime(customer.getLastModifiedTime()));
         customerDTO.setNumber(customer.getNumber());
         return customerDTO;
     }
@@ -22,7 +25,7 @@ public class CustomerMapper {
         customer.setFirstName(customerDTO.getFirstName());
         customer.setLastName(customerDTO.getLastName());
         customer.setAddress(customerDTO.getAddress());
-        customer.setLastModifiedTime(customerDTO.getLastModifiedTime());
+        customer.setLastModifiedTime(new Timestamp(customerDTO.getLastModifiedTime().getMillis()));
         customer.setNumber(customerDTO.getNumber());
         return customer;
     }

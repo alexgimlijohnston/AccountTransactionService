@@ -1,5 +1,6 @@
 package com.service.domain;
 
+import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -28,6 +29,7 @@ public class Customer {
     private String number;
 
     @Column(name = "lastModifiedTime")
+    @UpdateTimestamp
     private Timestamp lastModifiedTime;
 
     public Customer(){

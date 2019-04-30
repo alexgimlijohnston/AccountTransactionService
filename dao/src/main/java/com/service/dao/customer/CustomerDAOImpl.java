@@ -3,24 +3,13 @@ package com.service.dao.customer;
 import com.service.dao.DatabaseUtil;
 import com.service.domain.Customer;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import java.util.List;
 import java.util.Optional;
 
 public class CustomerDAOImpl implements CustomerDAO {
 
     public void createCustomer(Customer customer) {
-        Transaction transaction = null;
-        try {
-            Session session = DatabaseUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.save(customer);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
+        DatabaseUtil.insertWithTransaction(customer);
     }
 
     public Optional<Customer> getCustomerById(Integer id) {

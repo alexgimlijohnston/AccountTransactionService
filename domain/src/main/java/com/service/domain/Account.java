@@ -1,13 +1,13 @@
 package com.service.domain;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "account")
-public class Account implements Serializable {
+public class Account {
 
     @Id
     @Column(name = "accountId")
@@ -26,6 +26,7 @@ public class Account implements Serializable {
     private Double overdraftAmount;
 
     @Column(name = "lastModifiedTime")
+    @UpdateTimestamp
     private Timestamp lastModifiedTime;
 
     public Account(){}
