@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.service.common.enums.Currency;
 import org.joda.time.DateTime;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class AccountDTO {
@@ -12,15 +13,15 @@ public class AccountDTO {
 
     private String sortCode;
 
-    private Double balance;
+    private BigDecimal balance;
 
     private Currency currency;
 
-    private Double overdraftAmount;
+    private BigDecimal overdraftAmount;
 
     private DateTime lastModifiedTime;
 
-    public AccountDTO(Integer accountId, String sortCode, Double balance, Double overdraftAmount, DateTime lastModifiedTime, Currency currency) {
+    public AccountDTO(Integer accountId, String sortCode, BigDecimal balance, BigDecimal overdraftAmount, DateTime lastModifiedTime, Currency currency) {
         this.accountId = accountId;
         this.sortCode = sortCode;
         this.balance = balance;
@@ -51,11 +52,11 @@ public class AccountDTO {
     }
 
     @JsonProperty
-    public Double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
@@ -69,11 +70,11 @@ public class AccountDTO {
     }
 
     @JsonProperty
-    public Double getOverdraftAmount() {
+    public BigDecimal getOverdraftAmount() {
         return overdraftAmount;
     }
 
-    public void setOverdraftAmount(Double overdraftAmount) {
+    public void setOverdraftAmount(BigDecimal overdraftAmount) {
         this.overdraftAmount = overdraftAmount;
     }
 

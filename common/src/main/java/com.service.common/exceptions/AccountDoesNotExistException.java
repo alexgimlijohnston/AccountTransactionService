@@ -1,6 +1,8 @@
 package com.service.common.exceptions;
 
-public class AccountDoesNotExistException extends Exception {
+import javax.ws.rs.BadRequestException;
+
+public class AccountDoesNotExistException extends BadRequestException {
 
     public AccountDoesNotExistException(String message) {
         super(message);

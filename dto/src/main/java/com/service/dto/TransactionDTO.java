@@ -2,6 +2,7 @@ package com.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.service.common.enums.Currency;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class TransactionDTO {
@@ -10,7 +11,7 @@ public class TransactionDTO {
 
     private Integer receiverAccountId;
 
-    private Double amount;
+    private BigDecimal amount;
 
     private Currency currency;
 
@@ -33,11 +34,11 @@ public class TransactionDTO {
     }
 
     @JsonProperty
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

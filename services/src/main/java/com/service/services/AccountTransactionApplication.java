@@ -13,6 +13,8 @@ import io.dropwizard.setup.Environment;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.math.BigDecimal;
+
 public class AccountTransactionApplication extends Application<AccountTransactionConfiguration> {
 
     public static void main(String[] args) throws Exception {
@@ -44,8 +46,8 @@ public class AccountTransactionApplication extends Application<AccountTransactio
 
     private void setUpMockData(AccountResource accountResource, CustomerResource customerResource) {
         DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
-        AccountDTO accountDTO1 = new AccountDTO(10012, "40-20-10", 32020d, 500d, format.parseDateTime("2019-03-18T20:40:00"), Currency.GBP);
-        AccountDTO accountDTO2 = new AccountDTO(10014, "56-60-55", 100234d, 1000d, format.parseDateTime("2019-03-19T20:40:00"), Currency.EUR);
+        AccountDTO accountDTO1 = new AccountDTO(10012, "40-20-10", new BigDecimal(32020), new BigDecimal(500), format.parseDateTime("2019-03-18T20:40:00"), Currency.GBP);
+        AccountDTO accountDTO2 = new AccountDTO(10014, "56-60-55", new BigDecimal(100234), new BigDecimal(1000), format.parseDateTime("2019-03-19T20:40:00"), Currency.EUR);
 
         accountResource.createAccount(accountDTO1);
         accountResource.createAccount(accountDTO2);

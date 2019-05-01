@@ -2,6 +2,7 @@ package com.service.domain;
 
 import javax.persistence.*;
 import org.hibernate.annotations.UpdateTimestamp;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -17,13 +18,13 @@ public class Account {
     private String sortCode;
 
     @Column(name = "balance")
-    private Double balance;
+    private BigDecimal balance;
 
     @Column(name = "currency")
     private String currency;
 
     @Column(name = "overdraftAmount")
-    private Double overdraftAmount;
+    private BigDecimal overdraftAmount;
 
     @Column(name = "lastModifiedTime")
     @UpdateTimestamp
@@ -52,11 +53,11 @@ public class Account {
         this.sortCode = sortCode;
     }
 
-    public Double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
@@ -68,11 +69,11 @@ public class Account {
         this.currency = currency;
     }
 
-    public Double getOverdraftAmount() {
+    public BigDecimal getOverdraftAmount() {
         return overdraftAmount;
     }
 
-    public void setOverdraftAmount(Double overdraftAmount) {
+    public void setOverdraftAmount(BigDecimal overdraftAmount) {
         this.overdraftAmount = overdraftAmount;
     }
 

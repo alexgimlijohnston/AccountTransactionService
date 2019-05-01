@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -18,6 +19,9 @@ import static org.testng.Assert.assertTrue;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DatabaseUtil.class,AccountRepository.class})
 public class AccountDAOTest {
+
+//    @Mock
+//    private Session session;
 
     private AccountDAO accountDAO;
 
@@ -44,7 +48,7 @@ public class AccountDAOTest {
     public void getAccountById_validId_returnAccount() {
         Integer id = 2000;
         String sortCode = "10-12-45";
-        Session session = DatabaseUtil.getNewSession();
+        Session session = mock(Session.class);
         Account account = new Account(id, sortCode);
 
         when(DatabaseUtil.getNewSession()).thenReturn(session);
@@ -60,7 +64,7 @@ public class AccountDAOTest {
     @Test
     public void getAccountById_invalidId_returnOptionalEmpty() {
         Integer id = 2000;
-        Session session = DatabaseUtil.getNewSession();
+        Session session = mock(Session.class);
 
         when(DatabaseUtil.getNewSession()).thenReturn(session);
         when(AccountRepository.getAccountById(session, id)).thenReturn(Optional.empty());
