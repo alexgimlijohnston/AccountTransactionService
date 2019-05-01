@@ -9,5 +9,4 @@ public interface AccountDAO {
 
    Optional<Account> getAccountById(Integer id);
 
-
 }

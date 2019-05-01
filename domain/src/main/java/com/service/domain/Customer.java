@@ -33,7 +33,10 @@ public class Customer {
     private Timestamp lastModifiedTime;
 
     public Customer(){
+    }
 
+    public Customer(Integer customerId){
+        this.customerId = customerId;
     }
 
     public Customer(Integer customerId, String firstName, String lastName, String address, String number, Timestamp lastModifiedTime) {

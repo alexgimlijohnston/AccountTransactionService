@@ -2,6 +2,9 @@ package com.service.dao.transaction;
 
 
 import com.service.common.enums.Currency;
+import com.service.common.exceptions.AccountDoesNotExistException;
+import com.service.common.exceptions.InvalidCurrencyConversionException;
+import com.service.common.exceptions.InvalidFundsException;
 import com.service.dao.DatabaseUtil;
 import com.service.dao.account.AccountRepository;
 import com.service.dao.currency.CurrencyDAO;
@@ -52,19 +55,19 @@ public class TransactionDAOImpl implements TransactionDAO {
                 session.update(sender);
                 session.update(receiver);
             } else {
-                throw new Exception("Sender's account does not have enough money");
+                throw new InvalidFundsException("Sender's account does not have enough money");
             }
         } else {
-            throw new Exception("One of the accounts does not exist");
+            throw new AccountDoesNotExistException("One of the accounts does not exist");
         }
     }
 
-    private double getAmountInCorrectCurrency(Account account, Currency currency, Double amount) {
+    private double getAmountInCorrectCurrency(Account account, Currency currency, Double amount) throws InvalidCurrencyConversionException {
         return Currency.valueOf(account.getCurrency()).equals(currency) 
                 ? amount : convertToDifferentCurrency(account, currency, amount);
     }
 
-    private Double convertToDifferentCurrency(Account account, Currency fromCurrency, Double amount) {
+    private Double convertToDifferentCurrency(Account account, Currency fromCurrency, Double amount) throws InvalidCurrencyConversionException {
         Currency toCurrency = Currency.valueOf(account.getCurrency());
         return currencyDAO.convertCurrency(fromCurrency, toCurrency, amount);
     }

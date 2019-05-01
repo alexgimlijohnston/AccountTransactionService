@@ -3,50 +3,71 @@ package com.service.dao.account;
 import com.service.dao.DatabaseUtil;
 import com.service.domain.Account;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.internal.SessionFactoryImpl;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
+import org.mockito.internal.verification.VerificationModeFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import java.util.Optional;
+import static org.junit.Assert.assertFalse;
+import static org.powermock.api.mockito.PowerMockito.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(DatabaseUtil.class)
+@PrepareForTest({DatabaseUtil.class,AccountRepository.class})
 public class AccountDAOTest {
 
-    @Mock
-    SessionFactory sessionFactory;
+    private AccountDAO accountDAO;
 
-    @Mock
-    Transaction transaction;
-
-    @InjectMocks
-    AccountDAOImpl accountDAO;
-
-    @BeforeMethod
+    @Before
     public void initMocks() {
-        MockitoAnnotations.initMocks(this);
+        accountDAO = new AccountDAOImpl();
+
+        mockStatic(AccountRepository.class);
+        mockStatic(DatabaseUtil.class);
     }
 
-//    @Test
-//    public void createAccount_validAccount_saveToDatabase() {
-//        Account account = new Account(1002, "40-30-34");
-//
-//        mockStatic(DatabaseUtil.class);
-//        PowerMockito.when(DatabaseUtil.getSessionFactory()).thenReturn(sessionFactory);
-//        when(session.beginTransaction()).thenReturn(transaction);
-//
-//        accountDAO.createAccount(account);
-//    }
+    @Test
+    public void createAccount_account_insertAccountIntoDb() {
+        Integer id = 2000;
+        String sortCode = "10-12-45";
+        Account account = new Account(id, sortCode);
 
+        accountDAO.createAccount(account);
 
+        verifyStatic(VerificationModeFactory.times(1));
+    }
+
+    @Test
+    public void getAccountById_validId_returnAccount() {
+        Integer id = 2000;
+        String sortCode = "10-12-45";
+        Session session = DatabaseUtil.getNewSession();
+        Account account = new Account(id, sortCode);
+
+        when(DatabaseUtil.getNewSession()).thenReturn(session);
+        when(AccountRepository.getAccountById(session, id)).thenReturn(Optional.of(account));
+
+        Optional<Account> result = accountDAO.getAccountById(id);
+
+        assertTrue(result.isPresent());
+        assertEquals(id, result.get().getAccountId());
+        assertEquals(sortCode, result.get().getSortCode());
+    }
+
+    @Test
+    public void getAccountById_invalidId_returnOptionalEmpty() {
+        Integer id = 2000;
+        Session session = DatabaseUtil.getNewSession();
+
+        when(DatabaseUtil.getNewSession()).thenReturn(session);
+        when(AccountRepository.getAccountById(session, id)).thenReturn(Optional.empty());
+
+        Optional<Account> result = accountDAO.getAccountById(id);
+
+        assertFalse(result.isPresent());
+    }
 
 }
