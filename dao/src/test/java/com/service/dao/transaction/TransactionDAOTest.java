@@ -17,10 +17,11 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import java.math.BigDecimal;
 import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
-import static org.testng.AssertJUnit.assertEquals;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DatabaseUtil.class, AccountRepository.class})

@@ -13,7 +13,7 @@ public class CustomerRepository {
         return DatabaseUtil.selectObject(session, query, typeOfClass);
     }
 
-    public static void insertCustomer(Customer customer) {
+    public static void insertCustomer(Customer customer) throws Exception {
         DatabaseUtil.insertObject(customer);
     }
 

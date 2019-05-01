@@ -17,12 +17,17 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerMapper = new CustomerMapper();
     }
 
+    public CustomerServiceImpl(CustomerDAO customerDAO, CustomerMapper customerMapper) {
+        this.customerDAO = customerDAO;
+        this.customerMapper = customerMapper;
+    }
+
     public Optional<CustomerDTO> getCustomerById(Integer id) {
         Optional<Customer> customer = customerDAO.getCustomerById(id);
         return customer.map(customer1 -> customerMapper.mapCustomerToCustomerDTO(customer1));
     }
 
-    public void createCustomer(CustomerDTO customerDTO) {
+    public void createCustomer(CustomerDTO customerDTO) throws Exception {
         Customer customer = customerMapper.mapCustomerDTOToCustomer(customerDTO);
         customerDAO.createCustomer(customer);
     }

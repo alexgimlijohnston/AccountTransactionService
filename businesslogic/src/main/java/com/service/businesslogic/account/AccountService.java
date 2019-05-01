@@ -7,6 +7,6 @@ public interface AccountService {
 
     Optional<AccountDTO> getAccountById(Integer id);
 
-    void createAccount(AccountDTO accountDTO);
+    void createAccount(AccountDTO accountDTO) throws Exception;
 
 }

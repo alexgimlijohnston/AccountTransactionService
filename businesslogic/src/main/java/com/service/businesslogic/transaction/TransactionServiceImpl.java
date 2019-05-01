@@ -12,8 +12,12 @@ public class TransactionServiceImpl implements TransactionService {
         this.transactionDAO = new TransactionDAOImpl();
     }
 
+    public TransactionServiceImpl(TransactionDAO transactionDAO) {
+        this.transactionDAO = transactionDAO;
+    }
+
     @Override
-    public void transfer(TransactionDTO transactionDTO) {
+    public void transfer(TransactionDTO transactionDTO) throws Exception {
         transactionDAO.transfer(transactionDTO.getSenderAccountId(), transactionDTO.getReceiverAccountId(),
                 transactionDTO.getAmount(), transactionDTO.getCurrency());
     }

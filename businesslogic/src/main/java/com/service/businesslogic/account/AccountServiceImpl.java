@@ -17,12 +17,17 @@ public class AccountServiceImpl implements AccountService {
         this.accountMapper = new AccountMapper();
     }
 
+    public AccountServiceImpl(AccountDAO accountDAO, AccountMapper accountMapper) {
+        this.accountDAO = accountDAO;
+        this.accountMapper = accountMapper;
+    }
+
     public Optional<AccountDTO> getAccountById(Integer id) {
         Optional<Account> account = accountDAO.getAccountById(id);
         return account.map(account1 -> accountMapper.mapAccountToAccountDTO(account1));
     }
 
-    public void createAccount(AccountDTO accountDTO) {
+    public void createAccount(AccountDTO accountDTO) throws Exception {
         Account account = accountMapper.mapAccountDTOToAccount(accountDTO);
         accountDAO.createAccount(account);
     }

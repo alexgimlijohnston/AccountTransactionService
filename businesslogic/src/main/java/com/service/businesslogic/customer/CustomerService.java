@@ -7,6 +7,6 @@ public interface CustomerService {
 
     Optional<CustomerDTO> getCustomerById(Integer id);
 
-    void createCustomer(CustomerDTO customerDTO);
+    void createCustomer(CustomerDTO customerDTO) throws Exception;
 
 }

@@ -60,7 +60,7 @@ public class DatabaseUtil {
         return objs.isEmpty() ? Optional.empty() : Optional.of(objs.get(0));
     }
 
-    public static <T> void insertObject(T objectToBeSaved) {
+    public static <T> void insertObject(T objectToBeSaved) throws Exception {
         Transaction transaction = null;
         try {
             Session session = DatabaseUtil.getNewSession();
@@ -71,6 +71,7 @@ public class DatabaseUtil {
             if (transaction != null) {
                 transaction.rollback();
             }
+            throw new Exception(e);
         }
     }
 

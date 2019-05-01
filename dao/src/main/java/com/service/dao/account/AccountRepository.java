@@ -13,7 +13,7 @@ public class AccountRepository {
         return DatabaseUtil.selectObject(session, query, typeOfClass);
     }
 
-    public static void insertAccount(Account account) {
+    public static void insertAccount(Account account) throws Exception {
         DatabaseUtil.insertObject(account);
     }
 

@@ -6,6 +6,7 @@ import com.service.dto.AccountDTO;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Optional;
 
 @Path("/account")
@@ -18,22 +19,30 @@ public class AccountResource {
         this.accountService = new AccountServiceImpl();
     }
 
+    public AccountResource(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
     @GET
     @Path("/{id}")
-    public AccountDTO getAccount(@PathParam("id") Integer id) {
+    public Response getAccount(@PathParam("id") Integer id) {
         Optional<AccountDTO> accountDTO = accountService.getAccountById(id);
-        if(accountDTO.isPresent()) {
-            return accountDTO.get();
-        }
-        throw new NotFoundException("No Account Exists");
+        return accountDTO.isPresent()
+                ? Response.ok().entity(accountDTO.get()).build()
+                : Response.status(404).entity(String.format("Unable to find account with id &d", id)).build();
     }
 
     @POST
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/create")
-    public void createAccount(@NotNull AccountDTO accountDTO) {
-        accountService.createAccount(accountDTO);
+    public Response createAccount(@NotNull AccountDTO accountDTO) {
+        try {
+            accountService.createAccount(accountDTO);
+            return Response.ok().entity(String.format("Account with id %d was successfully created", accountDTO.getAccountId())).build();
+        } catch (Exception e) {
+            return Response.status(400).entity(String.format("Account with id %d could not be created", accountDTO.getAccountId())).build();
+        }
     }
 
 }

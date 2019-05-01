@@ -11,10 +11,11 @@ import org.mockito.internal.verification.VerificationModeFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.Optional;
+
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.powermock.api.mockito.PowerMockito.*;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DatabaseUtil.class, CustomerRepository.class})
@@ -31,7 +32,7 @@ public class CustomerDAOTest {
     }
 
     @Test
-    public void createCustomer_customer_insertCustomerIntoDb() {
+    public void createCustomer_customer_insertCustomerIntoDb() throws Exception {
         Integer id = 1000;
         Customer customer = new Customer(id);
 

@@ -8,7 +8,7 @@ import java.util.Optional;
 public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
-    public void createCustomer(Customer customer) {
+    public void createCustomer(Customer customer) throws Exception {
         CustomerRepository.insertCustomer(customer);
     }
 

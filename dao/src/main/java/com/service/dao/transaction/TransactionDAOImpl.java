@@ -36,7 +36,7 @@ public class TransactionDAOImpl implements TransactionDAO {
             transaction = session.beginTransaction();
             transferAmountFromSenderToReceiver(senderAccountId, receiverAccountId, amount, currency, session);
             transaction.commit();
-        } catch (AccountDoesNotExistException | InvalidFundsException | InvalidCurrencyConversionException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }

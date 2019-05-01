@@ -4,6 +4,6 @@ import com.service.dto.TransactionDTO;
 
 public interface TransactionService {
 
-    void transfer(TransactionDTO transactionDTO);
+    void transfer(TransactionDTO transactionDTO) throws Exception;
 
 }

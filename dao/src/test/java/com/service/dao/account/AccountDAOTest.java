@@ -6,22 +6,19 @@ import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.Optional;
+
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.powermock.api.mockito.PowerMockito.*;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DatabaseUtil.class,AccountRepository.class})
 public class AccountDAOTest {
-
-//    @Mock
-//    private Session session;
 
     private AccountDAO accountDAO;
 
@@ -34,7 +31,7 @@ public class AccountDAOTest {
     }
 
     @Test
-    public void createAccount_account_insertAccountIntoDb() {
+    public void createAccount_account_insertAccountIntoDb() throws Exception {
         Integer id = 2000;
         String sortCode = "10-12-45";
         Account account = new Account(id, sortCode);

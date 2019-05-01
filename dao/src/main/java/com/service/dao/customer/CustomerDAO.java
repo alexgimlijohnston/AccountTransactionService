@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface CustomerDAO {
 
-    void createCustomer(Customer customer);
+    void createCustomer(Customer customer) throws Exception;
 
     Optional<Customer> getCustomerById(Integer id);
 
