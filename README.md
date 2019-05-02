@@ -20,6 +20,8 @@ Run: `java -jar target/services-1.0-SNAPSHOT.jar server config.yaml`
 
 ## Endpoints
 
+For the purpose of ease of demonstration, I have prepopulated the in-memory database with the values shown in the example below. Feel free to create your own!
+
 * **GET /account/{id}**
 	* Example account id: 10012
 
@@ -56,7 +58,7 @@ Run: `java -jar target/services-1.0-SNAPSHOT.jar server config.yaml`
 	```
 	{
 		"senderAccountId":10012,
-		"receiverAccountId":10016,
+		"receiverAccountId":10014,
 		"amount":20,
 		"currency":"USD"
 	}
