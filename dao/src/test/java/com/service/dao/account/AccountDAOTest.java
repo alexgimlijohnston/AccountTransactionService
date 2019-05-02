@@ -16,7 +16,7 @@ import static org.junit.Assert.assertFalse;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DatabaseUtil.class,AccountRepository.class})
+@PrepareForTest({DatabaseUtil.class})
 public class AccountDAOTest {
 
     private AccountDAO accountDAO;
@@ -25,7 +25,6 @@ public class AccountDAOTest {
     public void initMocks() {
         accountDAO = new AccountDAOImpl();
 
-        mockStatic(AccountRepository.class);
         mockStatic(DatabaseUtil.class);
     }
 

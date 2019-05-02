@@ -2,7 +2,6 @@ package com.service.services;
 
 import com.service.dto.AccountDTO;
 import com.service.common.enums.Currency;
-import com.service.dto.CustomerDTO;
 import com.service.services.healthcheck.AccountTransactionServiceHealthCheck;
 import com.service.services.resources.AccountResource;
 import com.service.services.resources.CustomerResource;
@@ -23,14 +22,13 @@ public class AccountTransactionApplication extends Application<AccountTransactio
 
     @Override
     public void initialize(Bootstrap<AccountTransactionConfiguration> bootstrap) {
-        // nothing to do yet
     }
 
     @Override
     public void run(AccountTransactionConfiguration configuration,
                     Environment environment) {
         setUpResources(environment);
-        final AccountTransactionServiceHealthCheck healthCheck = new AccountTransactionServiceHealthCheck(configuration.getTemplate());
+        final AccountTransactionServiceHealthCheck healthCheck = new AccountTransactionServiceHealthCheck();
         environment.healthChecks().register("template", healthCheck);
     }
 
@@ -48,7 +46,7 @@ public class AccountTransactionApplication extends Application<AccountTransactio
         DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
         AccountDTO accountDTO1 = new AccountDTO(10012, "40-20-10", new BigDecimal(32020), new BigDecimal(500), format.parseDateTime("2019-03-18T20:40:00"), Currency.GBP);
         AccountDTO accountDTO2 = new AccountDTO(10014, "56-60-55", new BigDecimal(100234), new BigDecimal(1000), format.parseDateTime("2019-03-19T20:40:00"), Currency.EUR);
-//
+
         accountResource.createAccount(accountDTO1);
         accountResource.createAccount(accountDTO2);
 

@@ -2,16 +2,12 @@ package com.service.services.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service.common.enums.Currency;
-import com.service.domain.Account;
 import com.service.dto.AccountDTO;
 import com.service.services.AccountTransactionApplication;
 import com.service.services.AccountTransactionConfiguration;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.filter.LoggingFilter;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.ClassRule;
 import org.junit.Test;
 import javax.ws.rs.client.*;
@@ -21,7 +17,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
 import static junit.framework.TestCase.assertEquals;
-import static org.joda.time.DateTime.now;
 import static org.junit.Assert.assertNotNull;
 
 public class AccountIT {
@@ -67,12 +62,12 @@ public class AccountIT {
     @Test
     public void givenAValidAccount_whenPostEndpointIsInvoked_thenCreateAccount() {
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setAccountId(100015);
+        accountDTO.setAccountId(10015);
         accountDTO.setSortCode("50-60-23");
         accountDTO.setBalance(new BigDecimal(2000));
         accountDTO.setOverdraftAmount(new BigDecimal(100));
         accountDTO.setCurrency(Currency.GBP);
-        accountDTO.setLastModifiedTime(now());
+//        accountDTO.setLastModifiedTime(DateTime.parse("2019-04-02T02:09:18.493+01:00"));
 
         Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
         WebTarget webTarget = client.target("http://localhost:8080/").path("account").path("create");

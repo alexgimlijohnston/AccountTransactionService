@@ -1,13 +1,15 @@
 package com.service.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 import java.util.Optional;
 
 public class DatabaseUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DatabaseUtil.class);
 
     private static EntityManager entityManager;
 
@@ -20,7 +22,7 @@ public class DatabaseUtil {
     }
 
     public static <T> Optional<T> selectObject(Class<T> typeOfClass, Integer id) {
-        //List obg = entityManager.createQuery("from Account where id = "+id).getResultList();
+        LOG.info(String.format("selecting object of type %s with id %d", typeOfClass, id));
         T obj = getEntityManager().find(typeOfClass, id);
         return obj == null ? Optional.empty(): Optional.of(obj);
     }
@@ -28,12 +30,13 @@ public class DatabaseUtil {
     public static <T> void insertObject(T objectToBeSaved) throws Exception {
         try {
             getEntityManager().getTransaction().begin();
-            System.out.println("Saving object to Database");
+            LOG.info(String.format("Saving object %s to Database", objectToBeSaved));
             getEntityManager().persist(objectToBeSaved);
             getEntityManager().flush();
             getEntityManager().getTransaction().commit();
         } catch (Exception e) {
             if (getEntityManager().getTransaction() != null) {
+                LOG.warn("Transaction could not be saved. Rollback.");
                 getEntityManager().getTransaction().rollback();
             }
             throw new Exception(e);

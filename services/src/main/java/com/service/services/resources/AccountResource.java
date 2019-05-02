@@ -3,6 +3,9 @@ package com.service.services.resources;
 import com.service.businesslogic.account.AccountService;
 import com.service.businesslogic.account.AccountServiceImpl;
 import com.service.dto.AccountDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,6 +15,8 @@ import java.util.Optional;
 @Path("/account")
 @Produces(MediaType.APPLICATION_JSON)
 public class AccountResource {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AccountResource.class);
 
     private AccountService accountService;
 
@@ -26,10 +31,11 @@ public class AccountResource {
     @GET
     @Path("/{id}")
     public Response getAccount(@PathParam("id") Integer id) {
+        LOG.info("Getting account with id " + id);
         Optional<AccountDTO> accountDTO = accountService.getAccountById(id);
         return accountDTO.isPresent()
                 ? Response.ok().entity(accountDTO.get()).build()
-                : Response.status(404).entity(String.format("Unable to find account with id &d", id)).build();
+                : Response.status(404).entity(String.format("Unable to find account with id %d", id)).build();
     }
 
     @POST
@@ -37,6 +43,7 @@ public class AccountResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/create")
     public Response createAccount(@NotNull AccountDTO accountDTO) {
+        LOG.info("Creating account with id " + accountDTO.getAccountId());
         try {
             accountService.createAccount(accountDTO);
             return Response.ok().entity(String.format("Account with id %d was successfully created", accountDTO.getAccountId())).build();

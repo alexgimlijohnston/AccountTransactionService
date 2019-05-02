@@ -6,27 +6,32 @@ import com.service.common.exceptions.AccountDoesNotExistException;
 import com.service.common.exceptions.InvalidCurrencyConversionException;
 import com.service.common.exceptions.InvalidFundsException;
 import com.service.dao.DatabaseUtil;
-import com.service.dao.account.AccountRepository;
+import com.service.dao.account.AccountDAO;
+import com.service.dao.account.AccountDAOImpl;
 import com.service.dao.currency.CurrencyDAO;
 import com.service.dao.currency.CurrencyDAOImpl;
 import com.service.domain.Account;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.Optional;
 
 public class TransactionDAOImpl implements TransactionDAO {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TransactionDAOImpl.class);
+
     private CurrencyDAO currencyDAO;
 
-    private EntityManager entityManager;
+    private AccountDAO accountDAO;
 
     public TransactionDAOImpl() {
         this.currencyDAO = new CurrencyDAOImpl();
+        this.accountDAO = new AccountDAOImpl();
     }
 
-    public TransactionDAOImpl(CurrencyDAO currencyDAO) {
+    public TransactionDAOImpl(CurrencyDAO currencyDAO, AccountDAO accountDAO) {
         this.currencyDAO = currencyDAO;
+        this.accountDAO = accountDAO;
     }
 
     @Override
@@ -46,8 +51,8 @@ public class TransactionDAOImpl implements TransactionDAO {
 
     private void transferAmountFromSenderToReceiver(Integer senderAccountId, Integer receiverAccountId, BigDecimal amount, Currency currency)
             throws AccountDoesNotExistException, InvalidFundsException, InvalidCurrencyConversionException {
-        Optional<Account> senderAccount = AccountRepository.getAccountById(senderAccountId);
-        Optional<Account> receiverAccount = AccountRepository.getAccountById(receiverAccountId);
+        Optional<Account> senderAccount = accountDAO.getAccountById(senderAccountId);
+        Optional<Account> receiverAccount = accountDAO.getAccountById(receiverAccountId);
 
         boolean senderExists = senderAccount.isPresent();
         boolean receiverExists = receiverAccount.isPresent();
@@ -66,7 +71,9 @@ public class TransactionDAOImpl implements TransactionDAO {
                 DatabaseUtil.getEntityManager().persist(receiver);
                 DatabaseUtil.getEntityManager().flush();
             } else {
-                throw new InvalidFundsException(String.format("Account %d does not have enough money", senderAccountId));
+                String errorMessage = String.format("Account %d has insufficient funds", senderAccountId);
+                LOG.warn(errorMessage);
+                throw new InvalidFundsException(errorMessage);
             }
 
         } else {
@@ -78,6 +85,7 @@ public class TransactionDAOImpl implements TransactionDAO {
             } else {
                 errorMessage = String.format("Account %d does not exist", receiverAccountId);
             }
+            LOG.warn(errorMessage);
             throw new AccountDoesNotExistException(errorMessage);
         }
     }

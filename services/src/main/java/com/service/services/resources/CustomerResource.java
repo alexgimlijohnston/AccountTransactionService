@@ -3,7 +3,8 @@ package com.service.services.resources;
 import com.service.businesslogic.customer.CustomerService;
 import com.service.businesslogic.customer.CustomerServiceImpl;
 import com.service.dto.CustomerDTO;
-import com.service.dto.CustomerDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -13,6 +14,8 @@ import java.util.Optional;
 @Path("/customer")
 @Produces(MediaType.APPLICATION_JSON)
 public class CustomerResource {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CustomerResource.class);
 
     private CustomerService customerService;
 
@@ -27,6 +30,7 @@ public class CustomerResource {
     @GET
     @Path("/{id}")
     public Response getCustomer(@PathParam("id") Integer id) {
+        LOG.info("Getting customer with id " + id);
         Optional<CustomerDTO> customerDTO = customerService.getCustomerById(id);
         return customerDTO.isPresent()
                 ? Response.ok().entity(customerDTO.get()).build()
@@ -38,6 +42,7 @@ public class CustomerResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/create")
     public Response createCustomer(@NotNull CustomerDTO customerDTO) {
+        LOG.info("Creating customer with id " + customerDTO.getCustomerId());
         try {
             customerService.createCustomer(customerDTO);
             return Response.ok().entity(String.format("Customer with id %d was successfully created", customerDTO.getCustomerId())).build();
