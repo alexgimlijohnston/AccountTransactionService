@@ -2,10 +2,10 @@ package com.service.services.resources;
 
 import com.service.businesslogic.account.AccountService;
 import com.service.businesslogic.account.AccountServiceImpl;
+import com.service.services.validation.ValidAccountDTO;
 import com.service.dto.AccountDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -41,8 +41,8 @@ public class AccountResource {
     @POST
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    @Path(value = "/create")
-    public Response createAccount(@NotNull AccountDTO accountDTO) {
+    @Path(value = "/")
+    public Response createAccount(@NotNull @ValidAccountDTO AccountDTO accountDTO) {
         LOG.info("Creating account with id " + accountDTO.getAccountId());
         try {
             accountService.createAccount(accountDTO);

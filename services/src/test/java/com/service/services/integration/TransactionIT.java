@@ -32,7 +32,7 @@ public class TransactionIT {
         transactionDTO.setCurrency(Currency.GBP);
 
         Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
-        WebTarget webTarget = client.target("http://localhost:8080/").path("transaction").path("transfer");
+        WebTarget webTarget = client.target("http://localhost:8080/").path("transaction");
 
         Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.json(transactionDTO));
@@ -55,7 +55,7 @@ public class TransactionIT {
         transactionDTO.setCurrency(Currency.GBP);
 
         Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
-        WebTarget webTarget = client.target("http://localhost:8080/").path("transaction").path("transfer");
+        WebTarget webTarget = client.target("http://localhost:8080/").path("transaction");
 
         Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.json(transactionDTO));
@@ -76,7 +76,7 @@ public class TransactionIT {
         transactionDTO.setCurrency(Currency.GBP);
 
         Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
-        WebTarget webTarget = client.target("http://localhost:8080/").path("transaction").path("transfer");
+        WebTarget webTarget = client.target("http://localhost:8080/").path("transaction");
 
         Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.json(transactionDTO));
@@ -97,7 +97,7 @@ public class TransactionIT {
         transactionDTO.setCurrency(Currency.EUR);
 
         Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
-        WebTarget webTarget = client.target("http://localhost:8080/").path("transaction").path("transfer");
+        WebTarget webTarget = client.target("http://localhost:8080/").path("transaction");
 
         Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.json(transactionDTO));

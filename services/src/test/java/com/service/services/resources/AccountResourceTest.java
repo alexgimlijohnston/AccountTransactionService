@@ -47,7 +47,7 @@ public class AccountResourceTest {
         Response response = accountResource.getAccount(accountId);
 
         assertEquals(response.getStatus(),404);
-        assertEquals(response.getEntity(),String.format("Unable to find account with id &d", accountId));
+        assertEquals(response.getEntity(),String.format("Unable to find account with id %d", accountId));
     }
 
     @Test

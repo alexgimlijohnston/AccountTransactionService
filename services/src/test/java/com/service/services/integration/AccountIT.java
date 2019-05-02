@@ -59,28 +59,4 @@ public class AccountIT {
         assertEquals(response.getStatus(), 404);
     }
 
-    @Test
-    public void givenAValidAccount_whenPostEndpointIsInvoked_thenCreateAccount() {
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setAccountId(10015);
-        accountDTO.setSortCode("50-60-23");
-        accountDTO.setBalance(new BigDecimal(2000));
-        accountDTO.setOverdraftAmount(new BigDecimal(100));
-        accountDTO.setCurrency(Currency.GBP);
-//        accountDTO.setLastModifiedTime(DateTime.parse("2019-04-02T02:09:18.493+01:00"));
-
-        Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
-        WebTarget webTarget = client.target("http://localhost:8080/").path("account").path("create");
-
-        Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
-        Response response = invocationBuilder.post(Entity.json(accountDTO));
-
-
-        String account = response.readEntity(String.class);
-
-        String expectedMessage = String.format("Account with id %d was successfully created", accountDTO.getAccountId());
-        assertEquals(account, expectedMessage);
-        assertEquals(response.getStatus(), 20);
-    }
-
 }

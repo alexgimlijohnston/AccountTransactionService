@@ -6,6 +6,7 @@ import com.service.common.exceptions.AccountDoesNotExistException;
 import com.service.common.exceptions.InvalidCurrencyConversionException;
 import com.service.common.exceptions.InvalidFundsException;
 import com.service.dto.TransactionDTO;
+import com.service.services.validation.ValidTransactionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +34,8 @@ public class TransactionResource {
     @POST
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    @Path(value = "/transfer")
-    public Response transfer(@NotNull TransactionDTO transactionDTO) {
+    @Path(value = "/")
+    public Response transfer(@NotNull @ValidTransactionDTO TransactionDTO transactionDTO) {
         try {
             String message = String.format("Transferred %f%s from account %d to account %d",
                     transactionDTO.getAmount(), transactionDTO.getCurrency().getName(), transactionDTO.getSenderAccountId(), transactionDTO.getReceiverAccountId());

@@ -48,9 +48,15 @@ public class TransactionResourceTest {
     @Test
     public void transfer_transactionWithInvalidAccount_returnNotFoundStatus() throws Exception {
         Integer senderAccountId = 100;
+        Integer receiverAccountId = 200;
+        BigDecimal amount = new BigDecimal(50);
+        Currency currency = Currency.GBP;
 
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.setSenderAccountId(senderAccountId);
+        transactionDTO.setReceiverAccountId(receiverAccountId);
+        transactionDTO.setAmount(amount);
+        transactionDTO.setCurrency(currency);
 
         String error = String.format("Account %d does not exist", senderAccountId);
 
@@ -65,9 +71,15 @@ public class TransactionResourceTest {
     @Test
     public void transfer_transactionWhichIsUnableToTransfer_returnBadResponseStatus() throws Exception {
         Integer senderAccountId = 100;
+        Integer receiverAccountId = 200;
+        BigDecimal amount = new BigDecimal(50);
+        Currency currency = Currency.GBP;
 
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.setSenderAccountId(senderAccountId);
+        transactionDTO.setReceiverAccountId(receiverAccountId);
+        transactionDTO.setAmount(amount);
+        transactionDTO.setCurrency(currency);
 
         String error = String.format("Account %d has insufficient funds", senderAccountId);
 

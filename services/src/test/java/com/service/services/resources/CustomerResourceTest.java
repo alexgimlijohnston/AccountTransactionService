@@ -49,7 +49,7 @@ public class CustomerResourceTest {
         Response response = customerResource.getCustomer(customerId);
 
         assertEquals(response.getStatus(),404);
-        assertEquals(response.getEntity(),String.format("Unable to find customer with id &d", customerId));
+        assertEquals(response.getEntity(),String.format("Unable to find customer with id %d", customerId));
     }
 
     @Test
