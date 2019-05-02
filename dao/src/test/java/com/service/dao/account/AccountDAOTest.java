@@ -10,7 +10,6 @@ import org.mockito.internal.verification.VerificationModeFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.Optional;
-
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -45,11 +44,9 @@ public class AccountDAOTest {
     public void getAccountById_validId_returnAccount() {
         Integer id = 2000;
         String sortCode = "10-12-45";
-        Session session = mock(Session.class);
         Account account = new Account(id, sortCode);
 
-        when(DatabaseUtil.getNewSession()).thenReturn(session);
-        when(AccountRepository.getAccountById(session, id)).thenReturn(Optional.of(account));
+        when(DatabaseUtil.selectObject(Account.class, id)).thenReturn(Optional.of(account));
 
         Optional<Account> result = accountDAO.getAccountById(id);
 
@@ -61,10 +58,8 @@ public class AccountDAOTest {
     @Test
     public void getAccountById_invalidId_returnOptionalEmpty() {
         Integer id = 2000;
-        Session session = mock(Session.class);
 
-        when(DatabaseUtil.getNewSession()).thenReturn(session);
-        when(AccountRepository.getAccountById(session, id)).thenReturn(Optional.empty());
+        when(DatabaseUtil.selectObject(Account.class, id)).thenReturn(Optional.empty());
 
         Optional<Account> result = accountDAO.getAccountById(id);
 

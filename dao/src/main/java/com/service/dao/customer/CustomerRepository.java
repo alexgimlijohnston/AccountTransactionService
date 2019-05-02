@@ -7,10 +7,10 @@ import java.util.Optional;
 
 public class CustomerRepository {
 
-    public static Optional<Customer> getCustomerById(Session session, Integer id) {
+    public static Optional<Customer> getCustomerById(Integer id) {
         String query = String.format("from Customer where customerId = %d", id);
         Class<Customer> typeOfClass = Customer.class;
-        return DatabaseUtil.selectObject(session, query, typeOfClass);
+        return DatabaseUtil.selectObject(typeOfClass, id);
     }
 
     public static void insertCustomer(Customer customer) throws Exception {

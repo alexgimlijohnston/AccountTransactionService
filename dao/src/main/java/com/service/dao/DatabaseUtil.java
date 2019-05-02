@@ -1,80 +1,43 @@
 package com.service.dao;
 
-import com.service.domain.Account;
-import com.service.domain.AccountCustomerMapping;
-import com.service.domain.Customer;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
-import org.hibernate.service.ServiceRegistry;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 public class DatabaseUtil {
 
-    private static final String DB_DRIVER = "org.h2.Driver";
-    private static final String DB_CONNECTION = "jdbc:h2:~/test";
-    private static final String DB_USERNAME = "";
-    private static final String DB_PASSWORD = "";
-    private static final String DB_DIALECT = "org.hibernate.dialect.MySQL5Dialect";
-    private static final String DB_SHOW_SQL = "true";
-    private static final String CURRENT_SESSION_CONTEXT_CLASS = "thread";
-    private static final String HBM2DDL_AUTO = "create-drop";
+    private static EntityManager entityManager;
 
-    private static SessionFactory sessionFactory;
-
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            Configuration configuration = new Configuration();
-            Properties settings = new Properties();
-            settings.put(Environment.DRIVER, DB_DRIVER);
-            settings.put(Environment.URL, DB_CONNECTION);
-            settings.put(Environment.USER, DB_USERNAME);
-            settings.put(Environment.PASS, DB_PASSWORD);
-            settings.put(Environment.DIALECT, DB_DIALECT);
-            settings.put(Environment.SHOW_SQL, DB_SHOW_SQL);
-            settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, CURRENT_SESSION_CONTEXT_CLASS);
-            settings.put(Environment.HBM2DDL_AUTO, HBM2DDL_AUTO);
-
-            configuration.setProperties(settings);
-            configuration.addAnnotatedClass(Account.class);
-            configuration.addAnnotatedClass(Customer.class);
-            configuration.addAnnotatedClass(AccountCustomerMapping.class);
-            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                    .applySettings(configuration.getProperties()).build();
-            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+    public static EntityManager getEntityManager() {
+        if(entityManager == null) {
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
+            entityManager = entityManagerFactory.createEntityManager();
         }
-        return sessionFactory;
+        return entityManager;
     }
 
-    public static Session getNewSession() {
-        return DatabaseUtil.getSessionFactory().openSession();
-    }
-
-    public static <T> Optional<T> selectObject(Session session, String query, Class<T> typeOfClass) {
-        List<T> objs = session.createQuery(query, typeOfClass).list();
-        return objs.isEmpty() ? Optional.empty() : Optional.of(objs.get(0));
+    public static <T> Optional<T> selectObject(Class<T> typeOfClass, Integer id) {
+        //List obg = entityManager.createQuery("from Account where id = "+id).getResultList();
+        T obj = getEntityManager().find(typeOfClass, id);
+        return obj == null ? Optional.empty(): Optional.of(obj);
     }
 
     public static <T> void insertObject(T objectToBeSaved) throws Exception {
-        Transaction transaction = null;
         try {
-            Session session = DatabaseUtil.getNewSession();
-            transaction = session.beginTransaction();
-            session.save(objectToBeSaved);
-            transaction.commit();
+            getEntityManager().getTransaction().begin();
+            System.out.println("Saving object to Database");
+            getEntityManager().persist(objectToBeSaved);
+            getEntityManager().flush();
+            getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            if (getEntityManager().getTransaction() != null) {
+                getEntityManager().getTransaction().rollback();
             }
             throw new Exception(e);
         }
     }
-
-
 
 }

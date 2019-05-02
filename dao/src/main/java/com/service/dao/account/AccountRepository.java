@@ -2,15 +2,13 @@ package com.service.dao.account;
 
 import com.service.dao.DatabaseUtil;
 import com.service.domain.Account;
-import org.hibernate.Session;
 import java.util.Optional;
 
 public class AccountRepository {
 
-    public static Optional<Account> getAccountById(Session session, Integer id) {
-        String query = String.format("from Account where accountId = %d", id);
+    public static Optional<Account> getAccountById(Integer id) {
         Class<Account> typeOfClass = Account.class;
-        return DatabaseUtil.selectObject(session, query, typeOfClass);
+        return DatabaseUtil.selectObject(typeOfClass, id);
     }
 
     public static void insertAccount(Account account) throws Exception {

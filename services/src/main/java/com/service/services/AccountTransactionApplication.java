@@ -48,15 +48,15 @@ public class AccountTransactionApplication extends Application<AccountTransactio
         DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
         AccountDTO accountDTO1 = new AccountDTO(10012, "40-20-10", new BigDecimal(32020), new BigDecimal(500), format.parseDateTime("2019-03-18T20:40:00"), Currency.GBP);
         AccountDTO accountDTO2 = new AccountDTO(10014, "56-60-55", new BigDecimal(100234), new BigDecimal(1000), format.parseDateTime("2019-03-19T20:40:00"), Currency.EUR);
-
+//
         accountResource.createAccount(accountDTO1);
         accountResource.createAccount(accountDTO2);
 
-        CustomerDTO customerDTO1 = new CustomerDTO(400, "John", "Black", "Test Address 1", "07798435677", format.parseDateTime("2019-03-18T20:40:00"));
-        CustomerDTO customerDTO2 = new CustomerDTO(403, "Sarah", "White", "Test Address 2", "07813769927", format.parseDateTime("2019-03-19T20:40:00"));
-
-        customerResource.createCustomer(customerDTO1);
-        customerResource.createCustomer(customerDTO2);
+//        CustomerDTO customerDTO1 = new CustomerDTO(400, "John", "Black", "Test Address 1", "07798435677", format.parseDateTime("2019-03-18T20:40:00"));
+//        CustomerDTO customerDTO2 = new CustomerDTO(403, "Sarah", "White", "Test Address 2", "07813769927", format.parseDateTime("2019-03-19T20:40:00"));
+//
+//        customerResource.createCustomer(customerDTO1);
+//        customerResource.createCustomer(customerDTO2);
     }
 
 

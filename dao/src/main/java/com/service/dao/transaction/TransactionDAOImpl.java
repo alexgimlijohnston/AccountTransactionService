@@ -10,14 +10,16 @@ import com.service.dao.account.AccountRepository;
 import com.service.dao.currency.CurrencyDAO;
 import com.service.dao.currency.CurrencyDAOImpl;
 import com.service.domain.Account;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.math.BigDecimal;
 import java.util.Optional;
 
 public class TransactionDAOImpl implements TransactionDAO {
 
     private CurrencyDAO currencyDAO;
+
+    private EntityManager entityManager;
 
     public TransactionDAOImpl() {
         this.currencyDAO = new CurrencyDAOImpl();
@@ -30,24 +32,22 @@ public class TransactionDAOImpl implements TransactionDAO {
     @Override
     public void transfer(Integer senderAccountId, Integer receiverAccountId, BigDecimal amount, Currency currency)
             throws AccountDoesNotExistException, InvalidFundsException, InvalidCurrencyConversionException {
-        Session session = DatabaseUtil.getNewSession();
-        Transaction transaction = null;
         try {
-            transaction = session.beginTransaction();
-            transferAmountFromSenderToReceiver(senderAccountId, receiverAccountId, amount, currency, session);
-            transaction.commit();
+            DatabaseUtil.getEntityManager().getTransaction().begin();
+            transferAmountFromSenderToReceiver(senderAccountId, receiverAccountId, amount, currency);
+            DatabaseUtil.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            if (DatabaseUtil.getEntityManager().getTransaction() != null) {
+                DatabaseUtil.getEntityManager().getTransaction().rollback();
             }
             throw e;
         }
     }
 
-    private void transferAmountFromSenderToReceiver(Integer senderAccountId, Integer receiverAccountId, BigDecimal amount, Currency currency, Session session)
+    private void transferAmountFromSenderToReceiver(Integer senderAccountId, Integer receiverAccountId, BigDecimal amount, Currency currency)
             throws AccountDoesNotExistException, InvalidFundsException, InvalidCurrencyConversionException {
-        Optional<Account> senderAccount = AccountRepository.getAccountById(session, senderAccountId);
-        Optional<Account> receiverAccount = AccountRepository.getAccountById(session, receiverAccountId);
+        Optional<Account> senderAccount = AccountRepository.getAccountById(senderAccountId);
+        Optional<Account> receiverAccount = AccountRepository.getAccountById(receiverAccountId);
 
         boolean senderExists = senderAccount.isPresent();
         boolean receiverExists = receiverAccount.isPresent();
@@ -61,9 +61,10 @@ public class TransactionDAOImpl implements TransactionDAO {
 
                 sender.setBalance(sender.getBalance().subtract(amountInSendersCurrency));
                 receiver.setBalance(receiver.getBalance().add(amountInReceiversCurrency));
-                
-                session.update(sender);
-                session.update(receiver);
+
+                DatabaseUtil.getEntityManager().persist(sender);
+                DatabaseUtil.getEntityManager().persist(receiver);
+                DatabaseUtil.getEntityManager().flush();
             } else {
                 throw new InvalidFundsException(String.format("Account %d does not have enough money", senderAccountId));
             }

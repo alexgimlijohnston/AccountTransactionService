@@ -79,7 +79,6 @@ public class AccountDTO {
     }
 
     @JsonProperty
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     public DateTime getLastModifiedTime() {
         return lastModifiedTime;
     }

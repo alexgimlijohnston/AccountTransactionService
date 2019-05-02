@@ -11,18 +11,17 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public void createAccount(Account account) throws Exception {
-        AccountRepository.insertAccount(account);
+        DatabaseUtil.insertObject(account);
     }
 
     @Override
     public Optional<Account> getAccountById(Integer id) {
-        Session session = DatabaseUtil.getNewSession();
-        return AccountRepository.getAccountById(session, id);
+        Class<Account> typeOfClass = Account.class;
+        return DatabaseUtil.selectObject(typeOfClass, id);
     }
 
     @Override
     public Optional<List<Account>> getAccountsByCustomerId(Integer customerId) {
-//        Session session = DatabaseUtil.getNewSession();
         return Optional.empty();
     }
 
